@@ -435,17 +435,30 @@ document.addEventListener('DOMContentLoaded', function () {
     const client = getSupabaseClient(callbackStatus);
     if (!client) return;
 
+    const primaryLink = document.querySelector('[data-callback-primary]');
     client.auth.getSession().then(function ({ data, error }) {
       if (error) {
         setStatus(callbackStatus, getAuthErrorMessage(error), 'error');
+        if (primaryLink) {
+          primaryLink.href = getPageUrl('login.html');
+          primaryLink.firstChild.textContent = 'Go to log in ';
+        }
       } else if (data.session) {
-        setStatus(callbackStatus, 'You’re all set. Taking you back to Nexora AI…', 'success');
-        window.location.replace(getPageUrl('index.html'));
+        setStatus(callbackStatus, 'Your email is confirmed and your Nexora AI account is ready. You can continue to the website or sign in below.', 'success');
+        if (primaryLink) primaryLink.href = getPageUrl('index.html');
       } else {
-        setStatus(callbackStatus, 'We couldn’t verify that link. It may have expired; request a fresh one and try again.', 'error');
+        setStatus(callbackStatus, 'We couldn’t confirm this link. It may have expired, or it may have been opened in a different browser. Request a new confirmation email and open it in the same browser where you signed up.', 'error');
+        if (primaryLink) {
+          primaryLink.href = getPageUrl('login.html');
+          primaryLink.firstChild.textContent = 'Go to log in ';
+        }
       }
     }).catch(function () {
-      setStatus(callbackStatus, 'We couldn’t verify your sign-in. Please try again.', 'error');
+      setStatus(callbackStatus, 'We couldn’t confirm this link. Check your connection, then request a new confirmation email if the problem continues.', 'error');
+      if (primaryLink) {
+        primaryLink.href = getPageUrl('login.html');
+        primaryLink.firstChild.textContent = 'Go to log in ';
+      }
     });
   }
 });

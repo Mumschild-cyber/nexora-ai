@@ -195,9 +195,20 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('[data-google-sign-in]').forEach(function (button) {
     button.addEventListener('click', async function () {
       const status = document.querySelector('[data-form-status]');
-      if (document.querySelector('[data-auth-form="signup"]') && !hasPublishedPolicies()) {
-        setStatus(status, 'Sign-up is paused until the Terms of Service and Privacy Policy are published.', 'error');
-        return;
+      const signupForm = document.querySelector('[data-auth-form="signup"]');
+      if (signupForm) {
+        if (!hasPublishedPolicies()) {
+          setStatus(status, 'Sign-up is paused until the Terms of Service and Privacy Policy are published.', 'error');
+          return;
+        }
+
+        const termsAccepted = signupForm.elements.namedItem('acceptTerms');
+        const ageConfirmed = signupForm.elements.namedItem('confirmAge');
+        if (!termsAccepted.checked || !ageConfirmed.checked) {
+          setStatus(status, 'Agree to the policies and confirm that you are at least 16 to create an account.', 'error');
+          (termsAccepted.checked ? ageConfirmed : termsAccepted).focus();
+          return;
+        }
       }
 
       const client = getSupabaseClient(status);
@@ -321,6 +332,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
       if (action === 'signup' && !form.elements.namedItem('acceptTerms').checked) {
         form.elements.namedItem('acceptTerms').focus();
+        form.reportValidity();
+        return;
+      }
+
+      if (action === 'signup' && !form.elements.namedItem('confirmAge').checked) {
+        form.elements.namedItem('confirmAge').focus();
         form.reportValidity();
         return;
       }

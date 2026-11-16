@@ -4,5 +4,5 @@ window.NEXORA_AI_SUPABASE_CONFIG = {
   publishableKey: 'sb_publishable_t_nx98F2_9rZ00TTCoJTug_uqgiIrJn',
   termsUrl: 'terms.html',
   privacyUrl: 'privacy.html',
-  policiesApproved: false,
+  policiesApproved: true,
 };

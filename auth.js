@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function () {
           if (error) {
             setStatus(status, getAuthErrorMessage(error), 'error');
           } else {
-            setStatus(status, 'You’re signed in. Your Nexora AI session is ready.', 'success');
+            window.location.replace(getPageUrl('index.html'));
           }
         } else if (action === 'reset') {
           const { error } = await client.auth.resetPasswordForEmail(emailInput.value, {

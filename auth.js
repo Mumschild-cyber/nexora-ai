@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const namePattern = /^[\p{L}\p{M}][\p{L}\p{M}'’.-]*(?:[ \t]+[\p{L}\p{M}][\p{L}\p{M}'’.-]*)*$/u;
   const reservedDomains = new Set(['example.com', 'example.net', 'example.org']);
   const reservedTopLevelDomains = new Set(['example', 'invalid', 'localhost', 'test']);
-  const config = window.YOLA_SUPABASE_CONFIG;
+  const config = window.NEXORA_AI_SUPABASE_CONFIG;
   const supabaseSdk = window.supabase;
   const configurationIsValid =
     config &&
@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
           if (error) {
             setStatus(status, getAuthErrorMessage(error), 'error');
           } else {
-            setStatus(status, 'You’re signed in. Your Yola session is ready.', 'success');
+            setStatus(status, 'You’re signed in. Your Nexora AI session is ready.', 'success');
           }
         } else if (action === 'reset') {
           const { error } = await client.auth.resetPasswordForEmail(emailInput.value, {
@@ -422,7 +422,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (error) {
         setStatus(callbackStatus, getAuthErrorMessage(error), 'error');
       } else if (data.session) {
-        setStatus(callbackStatus, 'You’re all set. Taking you back to Yola…', 'success');
+        setStatus(callbackStatus, 'You’re all set. Taking you back to Nexora AI…', 'success');
         window.location.replace(getPageUrl('index.html'));
       } else {
         setStatus(callbackStatus, 'We couldn’t verify that link. It may have expired; request a fresh one and try again.', 'error');
